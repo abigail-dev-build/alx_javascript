@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>HTML BASICS</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+  </head>
+  <body>
+    <form>
+        <h1>Login to the website</h1>
+        <input placeholder="Firstname" type="text" id="firstname" />
+        <input placeholder="Email" type="text" id="email" />
+        <button id="set-cookies" type="button">Log me in</button><br><br>
+        <div id="show-space"></div>
+
+        <button id="show-cookies" type="button">Show the cookies</button>
+    </form>
+
+    <script>
+      const setButton = document.getElementById("set-cookies");
+      const showButton = document.getElementById("show-cookies");
+      const firstname = document.getElementById("firstname");
+      const email = document.getElementById("email");
+      const displayPage = document.getElementById('show-space');
+      setButton.addEventListener("click", setCookies);
+      showButton.addEventListener("click", showCookies);
+
+      function setCookies() {
+        document.cookie = "firstname=" + firstname.value;
+        document.cookie = "email=" + email.value;
+      }
+
+      function showCookies(cookieName) {
+        const cookies = document.cookie.split(";");
+        const nameArray = cookies[0].split("=");
+        const emailArray = cookies[1].split("=");
+
+        let cookieValues = [];
+        cookieValues.push(nameArray[1], emailArray[1]);
+
+        if (displayPage) {
+            const paragraph = document.createElement("p");
+            if (cookieValues.length > 0) {
+          paragraph.innerHTML = `Cookies: ${cookieValues.join(", ")}`;
+        } else {
+          paragraph.innerHTML = `Cookies: Not Found`;
+        }
+
+        displayPage.appendChild(paragraph);
+        }
+
+
+      }
+    </script>
+  </body>
+</html>
+
