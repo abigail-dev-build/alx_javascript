@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>Cookies & local storage</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      li {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+        <div id="body"></div>
+        <div id="message-container"></div>
+    </div>
+
+    <script>
+      const availableItems = ["Shampoo", "Soap", "Sponge", "Water"];
+
+      function isLocalStorageEnabled() {
+        try {
+          const key = "__localStorageTest__";
+          window.localStorage.setItem(key, null);
+          window.localStorage.removeItem(key);
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }
+
+      function addItemToCart(item) {
+        if (isLocalStorageEnabled()) {
+          localStorage.setItem(item, "true");
+        } else {
+          console.error(
+            "Local storage is not available. Item could not be added to cart."
+          );
+        }
+      }
+
+      function createStore() {
+        const list = document.createElement("ul");
+        const main = document.getElementById("body");
+        main.appendChild(list);
+
+        availableItems.forEach((item) => {
+          const listItems = document.createElement("li");
+          listItems.textContent = item;
+
+          listItems.addEventListener("click", function () {
+            addItemToCart(item);
+          });
+
+          list.appendChild(listItems);
+        });
+      }
+
+      function displayCart() {
+        if (isLocalStorageEnabled()) {
+          // Get the number of items in the cart from local storage
+          const storageItemsNumber = Object.keys(localStorage).length;
+
+          if (storageItemsNumber > 0) {
+            const message = document.createElement("p");
+            const container = document.getElementById('message-container')
+            message.textContent = `You previously had ${storageItemsNumber} item(s) in your cart.`;
+
+            container.appendChild(message);
+          }
+        }
+      }
+
+      if (isLocalStorageEnabled()) {
+        createStore();
+        displayCart();
+      } else {
+        alert(
+          "Sorry, your browser does not support Web storage. Try again with a better one."
+        );
+      }
+    </script>
+  </body>
+</html>
