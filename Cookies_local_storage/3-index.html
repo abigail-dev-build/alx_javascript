@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>Cookies & local storage</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      a {
+        margin-left: 10px;
+        font-weight: normal;
+        font-style: italic;
+        text-decoration: none;
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="myForm">
+      <h2>Login to the website</h2>
+      <form>
+        <input placeholder="Firstname" type="text" id="firstname" />
+        <input placeholder="Email" type="text" id="email" />
+        <button id="set-cookies" type="button">Log me in</button><br /><br />
+        <div id="show-space"></div>
+
+        <button id="show-cookies" type="button">Show the cookies</button>
+      </form>
+    </div>
+
+    <script>
+      const setButton = document.getElementById("set-cookies");
+      const showButton = document.getElementById("show-cookies");
+      const firstname = document.getElementById("firstname");
+      const email = document.getElementById("email");
+      const displayPage = document.getElementById("show-space");
+      const form = document.getElementById("myForm");
+      setButton.addEventListener("click", setCookies);
+      showButton.addEventListener("click", showCookies);
+
+      function showForm() {
+        form.style.display = "block";
+      }
+      function hideForm() {
+        form.style.display = "none";
+      }
+
+      function deleteCookiesAndShowForm(name) {
+        document.cookie =
+          "firstname= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+        document.cookie = "email= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+        showForm();
+      }
+
+      function setCookies() {
+        const d = new Date();
+        d.setTime(d.getTime() + 10 * 24 * 60 * 60 * 1000);
+        let expires = "expires=" + d.toUTCString();
+        document.cookie = "firstname=" + firstname.value + ";" + expires;
+        document.cookie = "email=" + email.value + ";" + expires;
+      }
+
+      function showCookies(cookieName) {
+        const cookies = document.cookie.split(";");
+        const nameArray = cookies[0].split("=");
+        const emailArray = cookies[1].split("=");
+
+        let cookieValues = [];
+        cookieValues.push(nameArray[1], emailArray[1]);
+
+        if (displayPage) {
+          const paragraph = document.createElement("p");
+          if (cookieValues.length > 0) {
+            paragraph.innerHTML = `Cookies: ${cookieValues.join(", ")}`;
+          } else {
+            paragraph.innerHTML = `Cookies: Not Found`;
+          }
+
+          displayPage.appendChild(paragraph);
+        }
+      }
+
+      function showWelcomeMessageOrForm() {
+        const userFirstname = getCookie("firstname");
+        console.log(userFirstname);
+        if (!userFirstname) {
+          showForm();
+        } else {
+          const existingDiv = document.getElementById("myForm");
+          if (existingDiv) {
+            const welcomeMessage = document.createElement("h1");
+            welcomeMessage.textContent = `Welcome: ${userFirstname}`;
+
+            const logoutLink = document.createElement("a");
+            logoutLink.textContent = "(logout)";
+            logoutLink.href = "#";
+
+            logoutLink.addEventListener("click", function (e) {
+              e.preventDefault();
+              deleteCookiesAndShowForm();
+            });
+            existingDiv.parentNode.replaceChild(welcomeMessage, existingDiv);
+            document.body.appendChild(document.createTextNode(" "));
+            document.body.appendChild(logoutLink);
+          }
+        }
+      }
+
+      function getCookie(cookieName) {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.startsWith(cookieName + "=")) {
+            return cookie.substring(cookieName.length + 1);
+          }
+        }
+        return null;
+      }
+      showWelcomeMessageOrForm();
+    </script>
+  </body>
+</html>
