@@ -1,2 +1,2 @@
-let myVar = 89;
+let myVar;
 myVar = 333;
