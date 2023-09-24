@@ -5,7 +5,7 @@ function executeXTimes(x, functionToCall) {
     }
   }
 
-//   function sayHello() {
-//     console.log("Hello!");
-//   }
+  function sayHello() {
+    console.log("Where I am!");
+  }
   

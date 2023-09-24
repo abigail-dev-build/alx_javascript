@@ -6,7 +6,11 @@ const myObject = {
   };
   function incr(obj) {
     obj.value += 1;
+    // myObject.value++;
   }
 
-  incr(myObject);
+  for (let i = 0; i < 100; i++) {
+    incr();
+    // console.log(myObject);
+  }
   
