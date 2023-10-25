@@ -13,7 +13,5 @@ class Rectangle {
     }
   }
   
-  // Example of creating instances of the Rectangle class
-//   const validRectangle = new Rectangle(5, 10);
-//   const invalidRectangle = new Rectangle(0, 8);
+  module.exports = Rectangle;
   
