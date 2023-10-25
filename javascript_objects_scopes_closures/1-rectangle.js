@@ -7,5 +7,5 @@ class Rectangle {
     }
   }
 
-//   const myRectangle = new Rectangle(5, 10);
+module.exports = Rectangle;
   
